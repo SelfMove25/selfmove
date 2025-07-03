@@ -328,7 +328,7 @@ function LoginForm() {
               </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="mt-6">
               <button
                 type="button"
                 onClick={signInWithGoogle}
@@ -337,14 +337,6 @@ function LoginForm() {
               >
                 <span className="mr-2">📧</span>
                 Google
-              </button>
-              <button
-                type="button"
-                disabled={true}
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-400 cursor-not-allowed"
-              >
-                <span className="mr-2">📘</span>
-                Facebook
               </button>
             </div>
           </div>
