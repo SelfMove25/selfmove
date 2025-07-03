@@ -1,0 +1,30 @@
+# Backend Environment Variables Template
+# Create a file called .env in the backend folder and copy these lines:
+
+NODE_ENV=development
+PORT=3001
+
+# Firebase Admin Configuration
+FIREBASE_PROJECT_ID=selfmove-a8b7f
+GOOGLE_APPLICATION_CREDENTIALS=./firebase-admin-key.json
+
+# Database
+DATABASE_URL=firestore
+
+# JWT Secret (generate a random string)
+JWT_SECRET=selfmove_jwt_secret_2024_make_it_long_and_random_string_here
+
+# Stripe Configuration (placeholder - replace with actual keys)
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+
+# Email Configuration (optional - for notifications)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+
+# Twilio Configuration (optional - for SMS verification)
+TWILIO_ACCOUNT_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_token
+TWILIO_PHONE_NUMBER=your_twilio_phone 

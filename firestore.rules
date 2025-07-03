@@ -1,0 +1,110 @@
+rules_version = '2';
+
+// Production Firestore Security Rules for SelfMove Property Marketplace
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions for authentication
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function hasKYCApproved() {
+      return isAuthenticated() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.kycStatus == 'approved';
+    }
+    
+    // Users collection - users can read/write their own data
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+    }
+    
+    // Properties collection
+    match /properties/{propertyId} {
+      // Anyone can read active, paid properties (for browsing)
+      allow read: if resource.data.isActive == true && resource.data.isPaid == true;
+      
+      // Property owners can read their own properties (even inactive/unpaid)
+      allow read: if isAuthenticated() && isOwner(resource.data.ownerId);
+      
+      // Only authenticated users with KYC can create properties
+      allow create: if isAuthenticated() && 
+                    hasKYCApproved() && 
+                    isOwner(request.resource.data.ownerId);
+      
+      // Only property owners can update their properties
+      allow update: if isAuthenticated() && isOwner(resource.data.ownerId);
+      
+      // Only property owners can delete (soft delete) their properties
+      allow delete: if isAuthenticated() && isOwner(resource.data.ownerId);
+    }
+    
+    // Offers collection
+    match /offers/{offerId} {
+      // Property owners and offer makers can read offers
+      allow read: if isAuthenticated() && 
+                  (isOwner(resource.data.buyerId) || 
+                   isOwner(resource.data.sellerId));
+      
+      // Only authenticated users with KYC can create offers
+      allow create: if isAuthenticated() && 
+                    hasKYCApproved() && 
+                    isOwner(request.resource.data.buyerId);
+      
+      // Only offer participants can update offers
+      allow update: if isAuthenticated() && 
+                    (isOwner(resource.data.buyerId) || 
+                     isOwner(resource.data.sellerId));
+    }
+    
+    // Messages collection (for property inquiries)
+    match /messages/{messageId} {
+      // Only sender and receiver can read messages
+      allow read: if isAuthenticated() && 
+                  (isOwner(resource.data.senderId) || 
+                   isOwner(resource.data.receiverId));
+      
+      // Only authenticated users can send messages
+      allow create: if isAuthenticated() && isOwner(request.resource.data.senderId);
+    }
+    
+    // Payments collection (read-only for users, write via backend only)
+    match /payments/{paymentId} {
+      // Only payment owner can read their payments
+      allow read: if isAuthenticated() && isOwner(resource.data.userId);
+      // Payments are created/updated via backend only (no client writes)
+    }
+    
+    // Solicitors collection (public read, admin write)
+    match /solicitors/{solicitorId} {
+      allow read: if true; // Public directory
+      // Solicitors are managed via admin panel (no client writes)
+    }
+    
+    // Admin collections (admin only)
+    match /admin/{document=**} {
+      allow read, write: if isAuthenticated() && 
+                         exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+                         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Analytics and logs (admin read only)
+    match /analytics/{document=**} {
+      allow read: if isAuthenticated() && 
+                  exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+                  get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

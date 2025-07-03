@@ -1,0 +1,102 @@
+rules_version = '2';
+
+// Production Firebase Storage Security Rules for SelfMove Property Marketplace
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isValidImage() {
+      return request.resource.size < 10 * 1024 * 1024 // 10MB limit
+             && request.resource.contentType.matches('image/.*');
+    }
+    
+    function isValidProfilePic() {
+      return request.resource.size < 5 * 1024 * 1024 // 5MB limit
+             && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Property Images - organized by property ID
+    match /properties/{propertyId}/{imageFile} {
+      // Allow public read access (anyone can view property images)
+      allow read: if true;
+      
+      // Allow authenticated property owners to upload images
+      allow write: if isAuthenticated() 
+                   && isValidImage()
+                   && (
+                     // Check if user owns the property (via Firestore)
+                     exists(/databases/(default)/documents/properties/$(propertyId)) &&
+                     get(/databases/(default)/documents/properties/$(propertyId)).data.ownerId == request.auth.uid
+                   );
+      
+      // Allow property owners to delete their images
+      allow delete: if isAuthenticated() 
+                    && (
+                      // Check if user owns the property
+                      exists(/databases/(default)/documents/properties/$(propertyId)) &&
+                      get(/databases/(default)/documents/properties/$(propertyId)).data.ownerId == request.auth.uid
+                    );
+    }
+    
+    // User Profile Pictures 
+    match /users/{userId}/profile/{imageFile} {
+      // Allow public read for profile pictures
+      allow read: if true;
+      
+      // Only allow users to upload their own profile picture
+      allow write: if isAuthenticated() 
+                   && isOwner(userId)
+                   && isValidProfilePic();
+      
+      // Only allow users to delete their own profile picture
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+    
+    // Document uploads (contracts, IDs, etc.) - KYC related
+    match /users/{userId}/documents/{documentFile} {
+      // Private read - only user and admins
+      allow read: if isAuthenticated() && 
+                  (isOwner(userId) || 
+                   (exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+                    get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin'));
+      
+      // Only user can upload their documents
+      allow write: if isAuthenticated() 
+                   && isOwner(userId)
+                   && request.resource.size < 10 * 1024 * 1024; // 10MB limit
+      
+      // Only user can delete their documents  
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+    
+    // Temporary uploads (for processing)
+    match /temp/{userId}/{fileName} {
+      // Private read/write for user only, auto-expire
+      allow read, write: if isAuthenticated() 
+                         && isOwner(userId)
+                         && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+    
+    // Admin uploads (system assets, etc.)
+    match /admin/{allPaths=**} {
+      allow read: if true; // Public read for system assets
+      allow write: if isAuthenticated() && 
+                   exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+                   get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+} 
