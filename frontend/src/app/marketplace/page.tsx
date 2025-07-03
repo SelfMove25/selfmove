@@ -390,11 +390,11 @@ export default function Marketplace() {
     : filteredProperties
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-green-50/50">
+    <div className="min-h-screen bg-white">
       <Header />
 
       {/* Page Title & Tabs */}
-      <div className="bg-gradient-to-br from-white via-blue-50/30 to-green-50/30 border-b border-blue-100 relative overflow-hidden">
+      <div className="bg-white border-b border-blue-100 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           <div className="absolute top-5 left-10 w-20 h-20 bg-blue-200/20 rounded-full blur-2xl"></div>
@@ -712,7 +712,7 @@ export default function Marketplace() {
       </div>
 
       {/* Results Header */}
-      <div className="bg-white/90 backdrop-blur-sm border-b border-blue-100">
+      <div className="bg-white border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 sm:space-x-4">

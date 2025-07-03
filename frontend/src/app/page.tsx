@@ -9,7 +9,7 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-green-50 overflow-hidden">
+      <section className="relative bg-white overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute top-10 left-10 w-32 h-32 bg-blue-200/20 rounded-full blur-3xl animate-pulse"></div>
@@ -197,7 +197,7 @@ export default function Home() {
       </section>
 
       {/* Value Proposition for Sellers */}
-      <section className="bg-gradient-to-br from-gray-50 via-blue-50/30 to-green-50/30 py-16 relative overflow-hidden">
+      <section className="bg-white py-16 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           <div className="absolute top-20 left-20 w-20 h-20 bg-blue-200/20 rounded-full blur-2xl"></div>

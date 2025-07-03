@@ -92,7 +92,7 @@ export default function PropertyDetails() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-polished-blue-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">🏠</div>
           <p className="text-gray-600">Loading property details...</p>
@@ -103,7 +103,7 @@ export default function PropertyDetails() {
 
   if (!property) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-polished-blue-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">❌</div>
           <p className="text-gray-600">Property not found</p>
@@ -116,7 +116,7 @@ export default function PropertyDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-polished-blue-50 to-blue-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-polished-blue-200 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -140,7 +140,7 @@ export default function PropertyDetails() {
           <div className="lg:col-span-2 space-y-6">
             {/* Property Images */}
             <div className="bg-white rounded-lg shadow-lg border border-polished-blue-200 overflow-hidden">
-              <div className="h-96 bg-gradient-to-br from-polished-blue-100 to-blue-100 flex items-center justify-center">
+              <div className="h-96 bg-white flex items-center justify-center">
                 <span className="text-8xl">🏠</span>
               </div>
             </div>

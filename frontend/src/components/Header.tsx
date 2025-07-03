@@ -78,7 +78,7 @@ export default function Header() {
 
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 backdrop-blur-sm">
-                    <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50 rounded-t-2xl">
+                    <div className="px-4 py-3 border-b border-gray-100 bg-white rounded-t-2xl">
                       <p className="text-sm font-bold text-gray-900">{user.displayName}</p>
                       <p className="text-sm text-gray-600">{user.email}</p>
                     </div>
@@ -225,7 +225,7 @@ export default function Header() {
             ) : user ? (
               // Logged in user menu
               <>
-                <div className="px-3 py-3 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl mb-3">
+                <div className="px-3 py-3 bg-white rounded-xl mb-3">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-green-500 text-white rounded-full flex items-center justify-center text-sm font-medium shadow-lg">
                       {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
