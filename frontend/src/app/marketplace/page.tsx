@@ -390,45 +390,63 @@ export default function Marketplace() {
     : filteredProperties
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-green-50/50">
       <Header />
 
       {/* Page Title & Tabs */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
-            {filter === 'sale' ? 'Find property for sale' : 'Properties to rent'}
-          </h1>
+      <div className="bg-gradient-to-br from-white via-blue-50/30 to-green-50/30 border-b border-blue-100 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+          <div className="absolute top-5 left-10 w-20 h-20 bg-blue-200/20 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-5 right-10 w-24 h-24 bg-green-200/20 rounded-full blur-2xl"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
+          <div className="flex items-center mb-4 sm:mb-6">
+            <span className="text-2xl mr-3">🏘️</span>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+              {filter === 'sale' ? 'Find property for sale' : 'Properties to rent'}
+            </h1>
+          </div>
 
           {/* Property Type Tabs */}
           <div className="flex space-x-0 mb-4 sm:mb-6">
             <button
               onClick={() => setFilter('sale')}
-              className={`px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium border-b-2 transition-colors touch-manipulation ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium border-b-2 transition-all duration-300 touch-manipulation relative group ${
                 filter === 'sale'
-                  ? 'text-gray-900 border-gray-900'
-                  : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
+                  ? 'text-green-600 border-green-600 bg-green-50'
+                  : 'text-gray-600 border-transparent hover:text-green-600 hover:border-green-300 hover:bg-green-50/50'
               }`}
             >
+              <span className="mr-1">🛒</span>
               Buy
+              {filter === 'sale' && (
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 to-emerald-400/10 rounded-t-lg"></div>
+              )}
             </button>
             <button
               onClick={() => setFilter('rent')}
-              className={`px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium border-b-2 transition-colors touch-manipulation ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium border-b-2 transition-all duration-300 touch-manipulation relative group ${
                 filter === 'rent'
-                  ? 'text-gray-900 border-gray-900'
-                  : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-300'
+                  ? 'text-blue-600 border-blue-600 bg-blue-50'
+                  : 'text-gray-600 border-transparent hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50/50'
               }`}
             >
+              <span className="mr-1">🏠</span>
               Rent
+              {filter === 'rent' && (
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-t-lg"></div>
+              )}
             </button>
           </div>
 
           {/* Rightmove-style Search Form */}
-          <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6">
+          <div className="bg-white/80 backdrop-blur-sm border border-blue-100 rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300">
             {/* Location Search - New Section */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center">
+                <span className="mr-2">📍</span>
                 Location
               </label>
               <div className="relative">
@@ -444,10 +462,10 @@ export default function Marketplace() {
                     onFocus={() => setShowLocationSuggestions(true)}
                     onBlur={() => setTimeout(() => setShowLocationSuggestions(false), 200)}
                     placeholder="Enter location, postcode, or area..."
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900"
+                    className="w-full pl-10 pr-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 shadow-sm hover:shadow-md transition-all duration-300"
                   />
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -458,7 +476,7 @@ export default function Marketplace() {
                         setSearchFilters(prev => ({ ...prev, location: '' }))
                         setSearchLocation(null)
                       }}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-red-500 transition-colors"
                     >
                       <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -469,7 +487,7 @@ export default function Marketplace() {
                 
                 {/* Location Suggestions Dropdown */}
                 {showLocationSuggestions && locationSuggestions.length > 0 && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                  <div className="absolute z-10 w-full mt-1 bg-white border border-blue-200 rounded-xl shadow-xl max-h-60 overflow-y-auto backdrop-blur-sm">
                     {locationSuggestions.map((suggestion, index) => (
                       <button
                         key={index}
@@ -478,10 +496,10 @@ export default function Marketplace() {
                           handleLocationSearch(suggestion)
                           setShowLocationSuggestions(false)
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors text-sm text-gray-900 border-b border-gray-100 last:border-b-0"
+                        className="w-full px-4 py-3 text-left hover:bg-blue-50 transition-colors text-sm text-gray-900 border-b border-blue-100 last:border-b-0 group"
                       >
                         <div className="flex items-center">
-                          <svg className="h-4 w-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="h-4 w-4 text-blue-400 mr-2 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
@@ -497,11 +515,14 @@ export default function Marketplace() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
               {/* Search radius */}
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Search radius</label>
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1 flex items-center">
+                  <span className="mr-1">📏</span>
+                  Search radius
+                </label>
                 <select
                   value={searchFilters.searchRadius}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, searchRadius: e.target.value }))}
-                  className="w-full px-3 py-2 sm:py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation"
+                  className="w-full px-3 py-2 sm:py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <option value="this-area-only">This area only</option>
                   <option value="0.25-miles">+ 1/4 mile</option>
@@ -519,11 +540,14 @@ export default function Marketplace() {
 
               {/* Property types */}
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Property types</label>
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1 flex items-center">
+                  <span className="mr-1">🏘️</span>
+                  Property types
+                </label>
                 <select
                   value={searchFilters.propertyTypes}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, propertyTypes: e.target.value }))}
-                  className="w-full px-3 py-2 sm:py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation"
+                  className="w-full px-3 py-2 sm:py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <option value="any">Any</option>
                   <option value="house">Houses</option>
@@ -537,11 +561,14 @@ export default function Marketplace() {
 
               {/* Added to site */}
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Added to site</label>
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1 flex items-center">
+                  <span className="mr-1">⏰</span>
+                  Added to site
+                </label>
                 <select
                   value={searchFilters.addedToSite}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, addedToSite: e.target.value }))}
-                  className="w-full px-3 py-2 sm:py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation"
+                  className="w-full px-3 py-2 sm:py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <option value="anytime">Anytime</option>
                   <option value="last-24-hours">Last 24 hours</option>
@@ -554,24 +581,30 @@ export default function Marketplace() {
               {/* Include checkboxes */}
               <div className="flex items-center space-x-2 sm:space-x-4 pt-4 sm:pt-6">
                 {filter === 'sale' ? (
-                  <label className="flex items-center touch-manipulation">
+                  <label className="flex items-center touch-manipulation group">
                     <input
                       type="checkbox"
                       checked={searchFilters.includeUnderOffer}
                       onChange={(e) => setSearchFilters(prev => ({ ...prev, includeUnderOffer: e.target.checked }))}
-                      className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 focus:ring-2 touch-manipulation"
+                      className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2 touch-manipulation"
                     />
-                    <span className="ml-2 text-xs sm:text-sm text-gray-700">Include Under Offer, Sold STC</span>
+                    <span className="ml-2 text-xs sm:text-sm text-gray-700 group-hover:text-green-600 transition-colors">
+                      <span className="mr-1">📋</span>
+                      Include Under Offer, Sold STC
+                    </span>
                   </label>
                 ) : (
-                  <label className="flex items-center touch-manipulation">
+                  <label className="flex items-center touch-manipulation group">
                     <input
                       type="checkbox"
                       checked={searchFilters.includeLetAgreed}
                       onChange={(e) => setSearchFilters(prev => ({ ...prev, includeLetAgreed: e.target.checked }))}
-                      className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 focus:ring-2 touch-manipulation"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 touch-manipulation"
                     />
-                    <span className="ml-2 text-xs sm:text-sm text-gray-700">Include Let Agreed properties</span>
+                    <span className="ml-2 text-xs sm:text-sm text-gray-700 group-hover:text-blue-600 transition-colors">
+                      <span className="mr-1">📋</span>
+                      Include Let Agreed properties
+                    </span>
                   </label>
                 )}
               </div>
@@ -581,13 +614,13 @@ export default function Marketplace() {
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4">
               {/* Price range */}
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1">
                   Price range (£)
                 </label>
                 <select
                   value={searchFilters.priceMin}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, priceMin: e.target.value }))}
-                  className="w-full px-3 py-2 sm:py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation"
+                  className="w-full px-3 py-2 sm:py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   {(filter === 'sale' ? saleMinPrices : rentMinPrices).map(price => (
                     <option key={price.value} value={price.value}>{price.label}</option>
@@ -596,11 +629,11 @@ export default function Marketplace() {
               </div>
 
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">&nbsp;</label>
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1">&nbsp;</label>
                 <select
                   value={searchFilters.priceMax}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, priceMax: e.target.value }))}
-                  className="w-full px-3 py-2 sm:py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation"
+                  className="w-full px-3 py-2 sm:py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   {(filter === 'sale' ? saleMaxPrices : rentMaxPrices).map(price => (
                     <option key={price.value} value={price.value}>{price.label}</option>
@@ -610,11 +643,11 @@ export default function Marketplace() {
 
               {/* Bedrooms */}
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">No. of bedrooms</label>
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1">No. of bedrooms</label>
                 <select
                   value={searchFilters.bedroomsMin}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, bedroomsMin: e.target.value }))}
-                  className="w-full px-3 py-2 sm:py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation"
+                  className="w-full px-3 py-2 sm:py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <option value="no-min">No min</option>
                   <option value="1">1</option>
@@ -629,11 +662,11 @@ export default function Marketplace() {
               </div>
 
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">&nbsp;</label>
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-1">&nbsp;</label>
                 <select
                   value={searchFilters.bedroomsMax}
                   onChange={(e) => setSearchFilters(prev => ({ ...prev, bedroomsMax: e.target.value }))}
-                  className="w-full px-3 py-2 sm:py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation"
+                  className="w-full px-3 py-2 sm:py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-900 touch-manipulation shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <option value="no-max">No max</option>
                   <option value="1">1</option>
@@ -654,13 +687,19 @@ export default function Marketplace() {
             <div className="flex justify-between items-center">
               <button 
                 onClick={() => handleLocationSearch(searchFilters.location)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 sm:px-8 rounded-lg transition-colors text-sm w-full sm:w-auto touch-manipulation"
+                className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-bold py-3 px-6 sm:px-8 rounded-xl transition-all duration-300 text-sm w-full sm:w-auto touch-manipulation shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 group"
               >
-                Search properties
+                <span className="flex items-center justify-center">
+                  <span className="mr-2">🔍</span>
+                  Search properties
+                  <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </span>
               </button>
               
               {searchLocation && (
-                <span className="text-sm text-gray-600 ml-4">
+                <span className="text-sm text-green-600 ml-4 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
                   <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -673,20 +712,21 @@ export default function Marketplace() {
       </div>
 
       {/* Results Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white/90 backdrop-blur-sm border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <span className="text-xs sm:text-sm text-gray-600">
+              <span className="text-xs sm:text-sm text-gray-600 font-medium">
+                <span className="mr-1">📊</span>
                 {sortedProperties.length} {sortedProperties.length === 1 ? 'property' : 'properties'}
               </span>
             </div>
             
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="flex border border-gray-300 rounded-lg">
+              <div className="flex border border-blue-200 rounded-lg overflow-hidden shadow-sm">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 touch-manipulation ${viewMode === 'grid' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                  className={`p-2 touch-manipulation transition-all duration-300 ${viewMode === 'grid' ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-md' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'}`}
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -694,7 +734,7 @@ export default function Marketplace() {
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 touch-manipulation ${viewMode === 'list' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                  className={`p-2 touch-manipulation transition-all duration-300 ${viewMode === 'list' ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-md' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'}`}
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
@@ -711,12 +751,12 @@ export default function Marketplace() {
         {loading ? (
           <div className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm border border-gray-200 animate-pulse">
-                <div className="h-48 sm:h-64 bg-gray-200"></div>
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-blue-100 animate-pulse">
+                <div className="h-48 sm:h-64 bg-gradient-to-br from-blue-100 to-green-100"></div>
                 <div className="p-4 sm:p-6">
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-                  <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-4 bg-gradient-to-r from-blue-200 to-green-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gradient-to-r from-green-200 to-blue-200 rounded w-3/4 mb-4"></div>
+                  <div className="h-6 bg-gradient-to-r from-blue-200 to-green-200 rounded w-1/2"></div>
                 </div>
               </div>
             ))}
@@ -725,22 +765,26 @@ export default function Marketplace() {
           <div className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
             {sortedProperties.map((property) => (
               <Link key={property.id} href={`/property/${property.id}`} className="group touch-manipulation">
-                <div className={`bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 active:scale-[0.98] ${
+                <div className={`bg-white rounded-2xl overflow-hidden shadow-lg border border-blue-100 hover:shadow-2xl hover:border-blue-300 transition-all duration-500 hover:scale-[1.02] group-active:scale-[0.98] ${
                   viewMode === 'list' ? 'sm:flex' : ''
                 }`}>
-                  <div className={`relative bg-gray-100 ${viewMode === 'list' ? 'sm:w-80 sm:h-64 h-48' : 'h-48 sm:h-64'}`}>
+                  <div className={`relative bg-gradient-to-br from-blue-50 to-green-50 ${viewMode === 'list' ? 'sm:w-80 sm:h-64 h-48' : 'h-48 sm:h-64'}`}>
                     {/* Property Image Placeholder */}
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                      <svg className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+                    <div className="w-full h-full bg-gradient-to-br from-blue-100 via-white to-green-100 flex items-center justify-center">
+                      <div className="text-center">
+                        <span className="text-3xl sm:text-4xl mb-2 block">🏠</span>
+                        <svg className="w-8 h-8 sm:w-12 sm:h-12 text-blue-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
                     </div>
                     
                     {/* Property Type Badge */}
                     <div className="absolute top-2 sm:top-3 left-2 sm:left-3">
-                      <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold text-white ${
-                        property.listingType === 'sale' ? 'bg-blue-600' : 'bg-green-600'
+                      <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg ${
+                        property.listingType === 'sale' ? 'bg-gradient-to-r from-green-500 to-emerald-600' : 'bg-gradient-to-r from-blue-500 to-indigo-600'
                       }`}>
+                        <span className="mr-1">{property.listingType === 'sale' ? '💰' : '🏠'}</span>
                         {property.listingType === 'sale' ? 'For Sale' : 'To Rent'}
                       </span>
                     </div>

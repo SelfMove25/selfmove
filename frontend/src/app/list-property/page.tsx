@@ -149,17 +149,20 @@ export default function ListProperty() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-green-50/50">
       <Header />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 relative">
+          <div className="mb-4">
+            <span className="text-4xl animate-bounce">🏡</span>
+          </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            List your property
+            List your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">property</span>
           </h1>
           <p className="text-lg text-gray-600">
-            Create a professional listing and connect directly with qualified buyers and tenants
+            Create a <span className="font-semibold text-blue-600">professional listing</span> and connect directly with qualified buyers and tenants
           </p>
         </div>
 
@@ -168,10 +171,10 @@ export default function ListProperty() {
           <div className="flex items-center justify-between">
             {[1, 2, 3, 4, 5].map((step) => (
               <div key={step} className="flex items-center">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold text-sm ${
+                <div className={`flex items-center justify-center w-10 h-10 rounded-full font-bold text-sm transition-all duration-300 ${
                   step <= currentStep 
-                    ? 'bg-gray-900 text-white' 
-                    : 'bg-gray-200 text-gray-500'
+                    ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg transform scale-110' 
+                    : 'bg-gray-200 text-gray-500 hover:bg-gray-300'
                 }`}>
                   {step < currentStep ? (
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -182,19 +185,34 @@ export default function ListProperty() {
                   )}
                 </div>
                 {step < 5 && (
-                  <div className={`flex-1 h-0.5 mx-4 ${
-                    step < currentStep ? 'bg-gray-900' : 'bg-gray-200'
+                  <div className={`flex-1 h-1 mx-4 rounded-full transition-all duration-300 ${
+                    step < currentStep ? 'bg-gradient-to-r from-blue-600 to-green-600' : 'bg-gray-200'
                   }`} />
                 )}
               </div>
             ))}
           </div>
           <div className="flex justify-between mt-4">
-            <span className="text-sm text-gray-600">Details</span>
-            <span className="text-sm text-gray-600">Location</span>
-            <span className="text-sm text-gray-600">Features</span>
-            <span className="text-sm text-gray-600">Highlights</span>
-            <span className="text-sm text-gray-600">Review</span>
+            <span className="text-sm text-gray-600 font-medium flex items-center">
+              <span className="mr-1">📋</span>
+              Details
+            </span>
+            <span className="text-sm text-gray-600 font-medium flex items-center">
+              <span className="mr-1">📍</span>
+              Location
+            </span>
+            <span className="text-sm text-gray-600 font-medium flex items-center">
+              <span className="mr-1">⭐</span>
+              Features
+            </span>
+            <span className="text-sm text-gray-600 font-medium flex items-center">
+              <span className="mr-1">🎯</span>
+              Highlights
+            </span>
+            <span className="text-sm text-gray-600 font-medium flex items-center">
+              <span className="mr-1">📸</span>
+              Review
+            </span>
           </div>
         </div>
 

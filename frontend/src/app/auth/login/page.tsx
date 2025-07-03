@@ -41,10 +41,13 @@ function LoginForm() {
   // Don't render the form if user is already logged in
   if (user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-navy-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-navy-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Redirecting...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">
+            <span className="mr-2">🚀</span>
+            Redirecting...
+          </p>
         </div>
       </div>
     )
@@ -171,38 +174,51 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-navy-50 to-blue-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-10 left-10 w-32 h-32 bg-blue-200/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-10 right-10 w-40 h-40 bg-green-200/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-purple-200/20 rounded-full blur-2xl animate-pulse delay-500"></div>
+      </div>
+      
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-blue-100 w-full max-w-md overflow-hidden relative z-10">
         <div className="p-8">
           <div className="text-center mb-8">
+            <div className="mb-4">
+              <span className="text-4xl animate-bounce">🏡</span>
+            </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome to SelfMove
+              Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">SelfMove</span>
             </h1>
             <p className="text-gray-600">
+              <span className="mr-1">{isLogin ? '🔐' : '✨'}</span>
               {isLogin ? 'Sign in to your account' : 'Create your account'}
             </p>
           </div>
 
           {/* Toggle buttons */}
-          <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
+          <div className="flex bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-1 mb-6 border border-blue-100">
             <button
               onClick={() => setIsLogin(true)}
-              className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all ${
+              className={`flex-1 py-3 px-4 rounded-lg font-bold transition-all duration-300 ${
                 isLogin
-                  ? 'bg-navy-600 text-white'
-                  : 'text-gray-600 hover:text-navy-600'
+                  ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg'
+                  : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
               }`}
             >
+              <span className="mr-1">🔑</span>
               Sign In
             </button>
             <button
               onClick={() => setIsLogin(false)}
-              className={`flex-1 py-2 px-4 rounded-lg font-semibold transition-all ${
+              className={`flex-1 py-3 px-4 rounded-lg font-bold transition-all duration-300 ${
                 !isLogin
-                  ? 'bg-navy-600 text-white'
-                  : 'text-gray-600 hover:text-navy-600'
+                  ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg'
+                  : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
               }`}
             >
+              <span className="mr-1">🚀</span>
               Sign Up
             </button>
           </div>

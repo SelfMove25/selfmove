@@ -23,7 +23,7 @@ export default function Header() {
     const handleClickOutside = (event: MouseEvent) => {
       if (userMenuOpen || mobileMenuOpen) {
         const target = event.target as HTMLElement
-        if (!target.closest('.user-menu') && !target.closest('.mobile-menu')) {
+        if (!target.closest('.user-menu') && !target.closest('.mobile-menu') && !target.closest('.mobile-user-menu')) {
           setUserMenuOpen(false)
           setMobileMenuOpen(false)
         }
@@ -35,34 +35,39 @@ export default function Header() {
   }, [userMenuOpen, mobileMenuOpen])
 
   return (
-    <header className="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+    <header className="bg-white/95 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3 sm:py-4">
-          <Link href="/" className="text-xl sm:text-2xl font-bold text-gray-900">
+          <Link href="/" className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 transition-all duration-300">
+            <span className="mr-2">🏡</span>
             SelfMove
           </Link>
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/list-property" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">
+            <Link href="/list-property" className="text-gray-700 hover:text-green-600 transition-colors font-medium relative group">
+              <span className="mr-1">📝</span>
               List Property
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-500 to-emerald-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
-            <Link href="/marketplace" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">
+            <Link href="/marketplace" className="text-gray-700 hover:text-blue-600 transition-colors font-medium relative group">
+              <span className="mr-1">🔍</span>
               Browse Properties
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
             
             {loading ? (
               // Loading state - show placeholder to prevent layout shift
               <div className="flex items-center space-x-3">
-                <div className="w-16 h-8 bg-gray-200 rounded animate-pulse"></div>
-                <div className="w-16 h-8 bg-gray-200 rounded animate-pulse"></div>
+                <div className="w-16 h-8 bg-gradient-to-r from-blue-200 to-green-200 rounded-lg animate-pulse"></div>
+                <div className="w-16 h-8 bg-gradient-to-r from-green-200 to-blue-200 rounded-lg animate-pulse"></div>
               </div>
             ) : user ? (
               // Logged in user menu
               <div className="relative user-menu">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors"
+                  className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors group"
                 >
-                  <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-green-500 text-white rounded-full flex items-center justify-center text-sm font-medium shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
                     {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
                   </div>
                   <span className="font-medium">{user.displayName || 'Profile'}</span>
@@ -72,57 +77,62 @@ export default function Header() {
                 </button>
 
                 {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">{user.displayName}</p>
-                      <p className="text-sm text-gray-500">{user.email}</p>
+                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 backdrop-blur-sm">
+                    <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-green-50 rounded-t-2xl">
+                      <p className="text-sm font-bold text-gray-900">{user.displayName}</p>
+                      <p className="text-sm text-gray-600">{user.email}</p>
                     </div>
                     
-                    <Link href="/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                      <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
+                    <Link href="/profile" className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                      <span className="mr-3">👤</span>
                       My Profile
+                      <svg className="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                     
-                    <Link href="/my-properties" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                      <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
+                    <Link href="/my-properties" className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors group">
+                      <span className="mr-3">🏠</span>
                       My Properties
+                      <svg className="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                     
-                    <Link href="/liked-properties" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                      <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                      </svg>
+                    <Link href="/liked-properties" className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors group">
+                      <span className="mr-3">❤️</span>
                       Liked Properties
+                      <svg className="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                     
-                    <Link href="/offers" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                      <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
+                    <Link href="/offers" className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors group">
+                      <span className="mr-3">📄</span>
                       My Offers
+                      <svg className="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                     
-                    <Link href="/settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                      <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
+                    <Link href="/settings" className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-600 transition-colors group">
+                      <span className="mr-3">⚙️</span>
                       Settings
+                      <svg className="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                     
                     <div className="border-t border-gray-100 mt-2 pt-2">
                       <button
                         onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors group"
                       >
-                        <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span className="mr-3">🚪</span>
+                        Sign Out
+                        <svg className="w-4 h-4 ml-auto group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        Sign Out
                       </button>
                     </div>
                   </div>
@@ -131,10 +141,12 @@ export default function Header() {
             ) : (
               // Not logged in - show sign in/up buttons
               <div className="flex items-center space-x-3">
-                <Link href="/auth/login" className="text-gray-700 hover:text-gray-900 transition-colors font-medium">
+                <Link href="/auth/login" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+                  <span className="mr-1">🔐</span>
                   Sign In
                 </Link>
-                <Link href="/auth/login?mode=signup" className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors font-medium">
+                <Link href="/auth/login?mode=signup" className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                  <span className="mr-1">✨</span>
                   Sign Up
                 </Link>
               </div>
@@ -145,43 +157,50 @@ export default function Header() {
           <div className="md:hidden flex items-center space-x-2">
             {loading ? (
               <div className="flex items-center space-x-2">
-                <div className="w-16 h-8 bg-gray-200 rounded animate-pulse"></div>
-                <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
+                <div className="w-16 h-8 bg-gradient-to-r from-blue-200 to-green-200 rounded-lg animate-pulse"></div>
+                <div className="w-10 h-10 bg-gradient-to-br from-green-200 to-blue-200 rounded-full animate-pulse"></div>
               </div>
             ) : user ? (
               // Logged in user - show profile button
-              <>
-                <Link href="/list-property" className="bg-gray-900 text-white px-2 py-1.5 rounded text-xs font-medium">
-                  List Property
-                </Link>
-                <div className="relative mobile-user-menu">
-                  <button
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="flex items-center space-x-1 bg-gray-900 text-white px-2 py-1.5 rounded-lg transition-colors shadow-sm"
-                  >
-                    <div className="w-6 h-6 bg-white text-gray-900 rounded-full flex items-center justify-center text-xs font-bold">
-                      {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
-                    </div>
-                    <svg className={`w-4 h-4 text-white transition-transform ${mobileMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                </div>
-              </>
-            ) : (
-              // Not logged in - show hamburger menu
-              <>
-                <Link href="/list-property" className="bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium">
-                  List Property
-                </Link>
+              <div className="relative mobile-user-menu">
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2"
+                  className="flex items-center space-x-1 bg-gradient-to-r from-blue-600 to-green-600 text-white px-3 py-2 rounded-lg transition-all duration-300 hover:from-blue-700 hover:to-green-700 shadow-lg hover:shadow-xl"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  <div className="w-6 h-6 bg-white text-gray-900 rounded-full flex items-center justify-center text-xs font-bold">
+                    {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
+                  </div>
+                  <svg className={`w-4 h-4 text-white transition-transform ${mobileMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
+              </div>
+            ) : (
+              // Not logged in - show sign in button and hamburger menu
+              <>
+                <Link href="/auth/login" className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-2 rounded-lg flex items-center justify-center hover:from-blue-700 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <span className="text-sm">🔐</span>
+                </Link>
+                <div className="mobile-menu">
+                  <button
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className={`p-2 rounded-lg transition-all duration-300 ${
+                      mobileMenuOpen 
+                        ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg' 
+                        : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                    }`}
+                  >
+                    {mobileMenuOpen ? (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </>
             )}
           </div>
@@ -190,67 +209,75 @@ export default function Header() {
       
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 px-4 py-2 mobile-menu">
+        <div className="md:hidden bg-white/95 backdrop-blur-sm border-t border-blue-100 px-4 py-3 mobile-menu">
           <div className="space-y-1">
-            <Link href="/marketplace" className="block px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors">
-              Browse Properties
-            </Link>
-            
             {loading ? (
               // Loading state
               <div className="px-3 py-2 border-t border-gray-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-green-200 rounded-full animate-pulse"></div>
                   <div className="space-y-1">
-                    <div className="w-20 h-4 bg-gray-200 rounded animate-pulse"></div>
-                    <div className="w-16 h-3 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="w-20 h-4 bg-gradient-to-r from-blue-200 to-green-200 rounded animate-pulse"></div>
+                    <div className="w-16 h-3 bg-gradient-to-r from-green-200 to-blue-200 rounded animate-pulse"></div>
                   </div>
                 </div>
               </div>
             ) : user ? (
               // Logged in user menu
               <>
-                <div className="px-3 py-2 border-t border-gray-200">
+                <div className="px-3 py-3 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl mb-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-green-500 text-white rounded-full flex items-center justify-center text-sm font-medium shadow-lg">
                       {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{user.displayName}</p>
-                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <p className="text-sm font-bold text-gray-900">{user.displayName}</p>
+                      <p className="text-xs text-gray-600">{user.email}</p>
                     </div>
                   </div>
                 </div>
                 
-                <Link href="/profile" className="block px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors">
+                <Link href="/profile" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                  <span className="mr-3">👤</span>
                   My Profile
                 </Link>
-                <Link href="/my-properties" className="block px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors">
+                <Link href="/my-properties" className="flex items-center px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
+                  <span className="mr-3">🏠</span>
                   My Properties
                 </Link>
-                <Link href="/liked-properties" className="block px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors">
+                <Link href="/liked-properties" className="flex items-center px-3 py-2 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <span className="mr-3">❤️</span>
                   Liked Properties
                 </Link>
-                <Link href="/offers" className="block px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors">
+                <Link href="/offers" className="flex items-center px-3 py-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors">
+                  <span className="mr-3">📄</span>
                   My Offers
                 </Link>
-                <Link href="/settings" className="block px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors">
+                <Link href="/settings" className="flex items-center px-3 py-2 text-gray-700 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
+                  <span className="mr-3">⚙️</span>
                   Settings
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                  className="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                 >
+                  <span className="mr-3">🚪</span>
                   Sign Out
                 </button>
               </>
             ) : (
-              // Not logged in - show sign in/up buttons
+              // Not logged in - show navigation options
               <>
-                <Link href="/auth/login" className="block px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors">
-                  Sign In
+                <Link href="/list-property" className="flex items-center px-3 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
+                  <span className="mr-3">📝</span>
+                  List Property
                 </Link>
-                <Link href="/auth/login?mode=signup" className="block px-3 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
+                <Link href="/marketplace" className="flex items-center px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                  <span className="mr-3">🔍</span>
+                  Browse Properties
+                </Link>
+                <Link href="/auth/login?mode=signup" className="flex items-center px-3 py-2 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-300 shadow-lg">
+                  <span className="mr-3">✨</span>
                   Sign Up
                 </Link>
               </>
