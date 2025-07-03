@@ -149,7 +149,7 @@ export default function Header() {
                 <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
               </div>
             ) : user ? (
-              // Logged in user - show profile button with name
+              // Logged in user - show profile button
               <>
                 <Link href="/list-property" className="bg-gray-900 text-white px-2 py-1.5 rounded text-xs font-medium">
                   List Property
@@ -157,15 +157,12 @@ export default function Header() {
                 <div className="relative mobile-user-menu">
                   <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 px-2 py-1.5 rounded-lg transition-colors min-w-0"
+                    className="flex items-center space-x-1 bg-gray-900 text-white px-2 py-1.5 rounded-lg transition-colors shadow-sm"
                   >
-                    <div className="w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0">
+                    <div className="w-6 h-6 bg-white text-gray-900 rounded-full flex items-center justify-center text-xs font-bold">
                       {user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-sm font-medium text-gray-900 truncate max-w-[80px]">
-                      {user.displayName || 'Account'}
-                    </span>
-                    <svg className={`w-4 h-4 text-gray-500 transition-transform flex-shrink-0 ${mobileMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-4 h-4 text-white transition-transform ${mobileMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
