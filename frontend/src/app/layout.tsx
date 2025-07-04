@@ -9,7 +9,12 @@ export const metadata: Metadata = {
   title: 'SelfMove - Direct Property Sales & Rentals',
   description: 'Sell or rent your property directly. No agent fees, maximum exposure. Connect with verified buyers and tenants.',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/logo.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/logo.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 }
 

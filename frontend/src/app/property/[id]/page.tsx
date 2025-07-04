@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import Logo from '@/components/Logo'
 
 interface Property {
   id: string
@@ -120,9 +121,7 @@ export default function PropertyDetails() {
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-polished-blue-200 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-navy-800">
-            🏡 SelfMove
-          </Link>
+          <Logo size="md" showText={false} />
           <nav className="hidden md:flex space-x-6">
             <Link href="/marketplace" className="text-gray-700 hover:text-polished-blue-600 transition-colors">
               ← Back to Marketplace

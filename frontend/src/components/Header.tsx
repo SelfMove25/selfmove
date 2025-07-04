@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/lib/auth'
+import Logo from './Logo'
 
 export default function Header() {
   const { user, loading, logout } = useAuth()
@@ -38,10 +39,7 @@ export default function Header() {
     <header className="bg-white/95 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3 sm:py-4">
-          <Link href="/" className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 transition-all duration-300">
-            <span className="mr-2">🏡</span>
-            SelfMove
-          </Link>
+          <Logo size="md" showText={false} />
           <nav className="hidden md:flex items-center space-x-8">
             <Link href="/list-property" className="text-gray-700 hover:text-green-600 transition-colors font-medium relative group">
               <span className="mr-1">📝</span>
