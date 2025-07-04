@@ -10,6 +10,7 @@ export default function ListProperty() {
   const [currentStep, setCurrentStep] = useState(1)
   const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({})
   const [isUploading, setIsUploading] = useState(false)
+  const [selectedFeature, setSelectedFeature] = useState('')
   const [formData, setFormData] = useState({
     // Basic Info
     title: '',
@@ -94,7 +95,7 @@ export default function ListProperty() {
     
     // Energy & Utilities
     'Solar Panels', 'Electric Car Charging', 'Underfloor Heating', 
-    'Gas Central Heating', 'Electric Heating', 'Double Glazing',
+    'Gas Central Heating', 'Electric Heating',
     
     // Building Features
     'Lift', 'Concierge', 'Porter', 'Gym', 'Swimming Pool', 
@@ -108,14 +109,7 @@ export default function ListProperty() {
     }))
   }
 
-  const handleFeatureToggle = (feature: string) => {
-    setFormData(prev => ({
-      ...prev,
-      features: prev.features.includes(feature)
-        ? prev.features.filter(f => f !== feature)
-        : [...prev.features, feature]
-    }))
-  }
+
 
   const handleAddCustomFeature = () => {
     if (formData.customFeature.trim() && !formData.features.includes(formData.customFeature.trim())) {
@@ -125,6 +119,20 @@ export default function ListProperty() {
         customFeature: ''
       }))
     }
+  }
+
+  const handleAddFeatureFromDropdown = () => {
+    if (selectedFeature && !formData.features.includes(selectedFeature)) {
+      setFormData(prev => ({
+        ...prev,
+        features: [...prev.features, selectedFeature]
+      }))
+      setSelectedFeature('')
+    }
+  }
+
+  const getAvailableFeatures = () => {
+    return allPropertyFeatures.filter(feature => !formData.features.includes(feature))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -929,22 +937,38 @@ export default function ListProperty() {
                     Select all features that apply to your property. These help buyers find exactly what they're looking for.
                   </p>
                   
-                  {/* Feature Selection Grid */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
-                    {allPropertyFeatures.map((feature) => (
+                  {/* Feature Selection Dropdown */}
+                  <div className="bg-white rounded-lg p-4 border border-blue-200 mb-6">
+                    <h4 className="font-semibold text-gray-900 mb-3">Add Property Features</h4>
+                    <div className="flex gap-3">
+                      <select
+                        value={selectedFeature}
+                        onChange={(e) => setSelectedFeature(e.target.value)}
+                        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
+                      >
+                        <option value="">Select a feature to add...</option>
+                        {getAvailableFeatures().map((feature) => (
+                          <option key={feature} value={feature}>
+                            {feature}
+                          </option>
+                        ))}
+                      </select>
                       <button
-                        key={feature}
                         type="button"
-                        onClick={() => handleFeatureToggle(feature)}
-                        className={`p-3 rounded-lg border-2 text-sm font-medium transition-all transform hover:scale-105 ${
-                          formData.features.includes(feature)
-                            ? 'border-blue-500 bg-blue-500 text-white shadow-lg'
-                            : 'border-gray-200 bg-white hover:border-blue-300 text-gray-700 hover:bg-blue-50'
+                        onClick={handleAddFeatureFromDropdown}
+                        disabled={!selectedFeature}
+                        className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                          selectedFeature
+                            ? 'bg-blue-600 text-white hover:bg-blue-700'
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         }`}
                       >
-                        {feature}
+                        Add Feature
                       </button>
-                    ))}
+                    </div>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Choose from our comprehensive list of property features to highlight what makes your property special.
+                    </p>
                   </div>
 
                   {/* Selected Features Display */}
@@ -957,8 +981,9 @@ export default function ListProperty() {
                             {feature}
                             <button
                               type="button"
-                              onClick={() => handleFeatureToggle(feature)}
-                              className="ml-2 text-blue-600 hover:text-blue-800"
+                              onClick={() => removeFeature(feature)}
+                              className="ml-2 text-blue-600 hover:text-blue-800 font-bold"
+                              title="Remove feature"
                             >
                               ×
                             </button>
