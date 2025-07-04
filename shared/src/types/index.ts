@@ -247,5 +247,32 @@ export enum NotificationType {
   KYC_REJECTED = 'kyc_rejected',
   KYC_UNDER_REVIEW = 'kyc_under_review',
   PAYMENT_SUCCESS = 'payment_success',
-  PAYMENT_FAILED = 'payment_failed'
+  PAYMENT_FAILED = 'payment_failed',
+  NEW_MESSAGE = 'new_message'
+}
+
+// Offer-based messaging types
+export interface OfferMessage {
+  id: string;
+  offerId: string;
+  senderRole: 'buyer' | 'seller';
+  text: string;
+  createdAt: Date;
+  isRead?: boolean;
+}
+
+export interface OfferMessageFormData {
+  text: string;
+}
+
+// Chat conversation metadata
+export interface ChatConversation {
+  offerId: string;
+  propertyId: string;
+  buyerId: string;
+  sellerId: string;
+  lastMessage?: string;
+  lastMessageAt?: Date;
+  unreadCount: number;
+  isActive: boolean;
 } 
