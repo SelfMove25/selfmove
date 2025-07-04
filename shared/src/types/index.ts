@@ -42,6 +42,7 @@ export interface Property {
   size: number; // in sq ft
   address: Address;
   images: string[];
+  floorplans: string[]; // URLs to floorplan images
   features: string[];
   ownerId: string;
   isActive: boolean;
@@ -49,6 +50,7 @@ export interface Property {
   createdAt: Date;
   updatedAt: Date;
   views: number;
+  valuation?: PropertyValuation;
 }
 
 export enum PropertyType {
@@ -206,6 +208,46 @@ export interface PaginatedResponse<T> {
 }
 
 // Form Types
+// Property Valuation Types
+export interface PropertyValuation {
+  id: string;
+  propertyId: string;
+  estimatedValue: number;
+  valuationDate: Date;
+  valuationType: ValuationType;
+  methodology: string;
+  comparableProperties: ComparableProperty[];
+  marketTrends: MarketTrend[];
+  valuationReport?: string; // URL to detailed report
+  confidence: 'low' | 'medium' | 'high';
+  createdBy: string; // valuerId or 'system'
+  createdAt: Date;
+  isActive: boolean;
+}
+
+export enum ValuationType {
+  AUTOMATED = 'automated',
+  PROFESSIONAL = 'professional',
+  MARKET_ANALYSIS = 'market_analysis'
+}
+
+export interface ComparableProperty {
+  address: string;
+  soldPrice: number;
+  soldDate: Date;
+  size: number;
+  bedrooms: number;
+  bathrooms: number;
+  distance: number; // in miles
+}
+
+export interface MarketTrend {
+  area: string;
+  averagePrice: number;
+  priceChange: number; // percentage
+  timeframe: string; // e.g., "6 months", "1 year"
+}
+
 export interface PropertyFormData {
   title: string;
   description: string;
@@ -218,6 +260,8 @@ export interface PropertyFormData {
   address: Address;
   features: string[];
   images: (any | string)[];  // Support both File objects (browser) and strings (URLs)
+  floorplans: (any | string)[]; // Support both File objects (browser) and strings (URLs)
+  requestValuation?: boolean;
 }
 
 export interface OfferFormData {

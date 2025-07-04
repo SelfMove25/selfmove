@@ -20,6 +20,7 @@ interface Property {
     zipCode: string
   }
   images: string[]
+  floorplans: string[]
   description: string
   views: number
   features: string[]
@@ -29,6 +30,12 @@ interface Property {
     verified: boolean
   }
   createdAt: string
+  valuation?: {
+    estimatedValue: number
+    valuationDate: string
+    confidence: 'low' | 'medium' | 'high'
+    valuationType: 'automated' | 'professional' | 'market_analysis'
+  }
 }
 
 export default function PropertyDetails() {
@@ -40,6 +47,7 @@ export default function PropertyDetails() {
   const [showOfferModal, setShowOfferModal] = useState(false)
   const [offerAmount, setOfferAmount] = useState('')
   const [offerMessage, setOfferMessage] = useState('')
+  const [activeTab, setActiveTab] = useState<'images' | 'floorplans'>('images')
 
   // Mock data - will be replaced with API call
   useEffect(() => {
@@ -58,6 +66,7 @@ export default function PropertyDetails() {
         zipCode: 'SW1A 1AA'
       },
       images: ['/api/placeholder/800/600'],
+      floorplans: ['/api/placeholder/600/800', '/api/placeholder/600/800'],
       description: 'Beautiful modern apartment in the heart of London with stunning views and contemporary finishes. This property features an open-plan living area, fully equipped kitchen, and spacious bedrooms with built-in storage. Located in a prime area with excellent transport links.',
       views: 45,
       features: [
@@ -72,6 +81,12 @@ export default function PropertyDetails() {
         name: 'Sarah Johnson',
         joinDate: 'January 2023',
         verified: true
+      },
+      valuation: {
+        estimatedValue: 465000,
+        valuationDate: new Date().toISOString(),
+        confidence: 'high',
+        valuationType: 'automated'
       },
       createdAt: new Date().toISOString()
     }
@@ -137,10 +152,45 @@ export default function PropertyDetails() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Property Images */}
+            {/* Property Images & Floorplans */}
             <div className="bg-white rounded-lg shadow-lg border border-polished-blue-200 overflow-hidden">
+              {/* Tab Navigation */}
+              <div className="flex border-b border-gray-200">
+                <button
+                  onClick={() => setActiveTab('images')}
+                  className={`flex-1 px-6 py-3 text-sm font-medium ${
+                    activeTab === 'images'
+                      ? 'text-polished-blue-600 border-b-2 border-polished-blue-600 bg-polished-blue-50'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  📸 Property Images ({property.images.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('floorplans')}
+                  className={`flex-1 px-6 py-3 text-sm font-medium ${
+                    activeTab === 'floorplans'
+                      ? 'text-polished-blue-600 border-b-2 border-polished-blue-600 bg-polished-blue-50'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  📐 Floor Plans ({property.floorplans.length})
+                </button>
+              </div>
+
+              {/* Tab Content */}
               <div className="h-96 bg-white flex items-center justify-center">
-                <span className="text-8xl">🏠</span>
+                {activeTab === 'images' ? (
+                  <div className="text-center">
+                    <span className="text-8xl">🏠</span>
+                    <p className="text-gray-500 mt-4">Property Images</p>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <span className="text-8xl">📐</span>
+                    <p className="text-gray-500 mt-4">Floor Plans</p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -193,6 +243,62 @@ export default function PropertyDetails() {
                 </div>
               </div>
             </div>
+
+            {/* Property Valuation */}
+            {property.valuation && (
+              <div className="bg-white rounded-lg shadow-lg border border-polished-blue-200 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                    💰 Property Valuation
+                  </h3>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    property.valuation.confidence === 'high' 
+                      ? 'bg-green-100 text-green-800'
+                      : property.valuation.confidence === 'medium'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {property.valuation.confidence.toUpperCase()} CONFIDENCE
+                  </span>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center p-4 bg-gradient-to-br from-polished-blue-50 to-blue-50 rounded-lg">
+                    <div className="text-2xl font-bold text-polished-blue-600">
+                      £{property.valuation.estimatedValue.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">Estimated Value</div>
+                  </div>
+                  
+                  <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg">
+                    <div className="text-lg font-semibold text-green-600">
+                      {property.valuation.valuationType === 'automated' ? '🤖 Automated' :
+                       property.valuation.valuationType === 'professional' ? '👨‍💼 Professional' :
+                       '📊 Market Analysis'}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">Valuation Type</div>
+                  </div>
+                  
+                  <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg">
+                    <div className="text-lg font-semibold text-purple-600">
+                      {new Date(property.valuation.valuationDate).toLocaleDateString()}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">Valuation Date</div>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">
+                      💡 This valuation is based on local market data and comparable properties
+                    </span>
+                    <button className="text-polished-blue-600 hover:text-polished-blue-700 text-sm font-medium">
+                      View Full Report →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}
